@@ -63,7 +63,11 @@ export const Tooltip = forwardRef<HTMLSpanElement, TooltipProps>(function Toolti
   useEffect(() => {
     if (!open) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
+      if (event.key !== "Escape") return;
+      // Consume it: an enclosing <dialog> would otherwise treat the same
+      // Escape as its close request
+      event.preventDefault();
+      setOpen(false);
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);

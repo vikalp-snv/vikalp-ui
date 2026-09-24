@@ -44,6 +44,7 @@
   flex-direction: column;
   gap: calc(var(--ui-spacing) * 0.5);
   min-width: 0;
+  overflow-wrap: anywhere; /* long URLs/IDs break instead of overflowing (also Toast) */
 }
 
 .ui-alert-title {

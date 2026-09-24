@@ -27,11 +27,12 @@
   color: var(--ui-primary-foreground);
 }
 
-/* ProductsSection tags, re-expressed with tokens instead of slate-* */
+/* ProductsSection tags, re-expressed with tokens instead of slate-*.
+   The secondary pair, not muted: muted-foreground on muted is 4.25:1 (AA needs 4.5). */
 .ui-badge-neutral {
   border-color: var(--ui-border);
-  background-color: var(--ui-muted);
-  color: var(--ui-muted-foreground);
+  background-color: var(--ui-secondary);
+  color: var(--ui-secondary-foreground);
 }
 
 /* Status colors with their agreed foreground pairs (uxtokens.md) */

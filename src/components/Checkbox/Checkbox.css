@@ -17,10 +17,9 @@
   transition: transform var(--ui-duration-fast) ease;
 }
 
-.ui-checkbox:checked,
-.ui-checkbox:indeterminate {
-  border-color: var(--ui-primary);
-  background-color: var(--ui-primary);
+.ui-checkbox:is(:checked, :indeterminate) {
+  --ui-choice-border: var(--ui-primary);
+  --ui-choice-fill: var(--ui-primary);
 }
 
 .ui-checkbox:checked::before {

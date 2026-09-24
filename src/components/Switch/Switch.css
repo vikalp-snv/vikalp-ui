@@ -4,7 +4,7 @@
   width: calc(var(--ui-spacing) * 6);
   height: calc(var(--ui-spacing) * 3.5);
   border-radius: var(--ui-radius-full);
-  background-color: var(--ui-muted-foreground);
+  --ui-choice-fill: var(--ui-muted-foreground);
 }
 
 .ui-switch::before {
@@ -20,7 +20,7 @@
 }
 
 .ui-switch:checked {
-  background-color: var(--ui-primary);
+  --ui-choice-fill: var(--ui-primary);
 }
 
 .ui-switch:checked::before {

@@ -1,6 +1,8 @@
 /* Layers on .ui-input. The chevron is two gradient triangles so its color
-   comes from a token (an SVG data URI could not read CSS variables). */
-.ui-select {
+   comes from a token (an SVG data URI could not read CSS variables).
+   Class repeated (0,2,0) to outweigh form-control plugins' own chevron on
+   `select:not([size])` (0,1,1). */
+.ui-select.ui-select {
   padding-right: calc(var(--ui-spacing) * 6);
   appearance: none;
   background-image:
@@ -24,7 +26,7 @@
 }
 
 @media (forced-colors: active) {
-  .ui-select {
+  .ui-select.ui-select {
     appearance: auto;
     background-image: none;
   }

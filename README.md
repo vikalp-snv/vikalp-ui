@@ -1,8 +1,8 @@
 # @vikalpshakya/ui
 
 Simnovus React component library (POC). It is built on semantic design tokens,
-so the same components work in light and dark themes, in React apps, and in
-Astro pages (as static HTML, with no hydration).
+so the same components work in light and dark themes, in React apps and in
+Astro pages (see [Using with Astro](#using-with-astro)).
 
 ## Install and use
 
@@ -112,13 +112,13 @@ const id = toast({ title: "Test completed", description: "…", variant: "succes
 
 | Component | Behaviour |
 |---|---|
-| `Dialog` | The browser supplies the backdrop, stacking above everything, the focus trap and focus return. Escape, a backdrop click, × or `DialogClose` call `onOpenChange(false)`. Page scroll is locked while it's open. `size` sm · md · lg. |
-| `Dropdown` | Follows the WAI-ARIA menu-button pattern. Enter, Space and ↓ open the menu on the first item; ↑ opens it on the last. ↑/↓ wrap, Home/End jump, and Escape closes and returns focus to the trigger. Tab, a click outside, or moving focus away closes it. Disabled items stay focusable but do nothing. `checked` turns an item into a `menuitemcheckbox`. |
-| `Tabs` | The standard tabs pattern: only the active tab is in the Tab order. ←/→ wrap and Home/End jump, skipping disabled tabs, and move the selection with them. Inactive panels stay mounted but hidden. |
+| `Dialog` | `DialogClose` is `type="button"` by default, so a Cancel inside a form doesn't submit it. The browser supplies the backdrop, stacking above everything, the focus trap and focus return. Escape, a backdrop click, × or `DialogClose` call `onOpenChange(false)`. Page scroll is locked while it's open. `size` sm · md · lg. |
+| `Dropdown` | `DropdownTrigger` is `type="button"` by default, so it never submits an enclosing form. Follows the WAI-ARIA menu-button pattern. Enter, Space and ↓ open the menu on the first item; ↑ opens it on the last. ↑/↓ wrap, Home/End jump, and Escape closes and returns focus to the trigger. Tab, a click outside, or moving focus away closes it. Disabled items stay focusable but do nothing. `checked` turns an item into a `menuitemcheckbox`. |
+| `Tabs` | The standard tabs pattern: only the active tab is in the Tab order. ←/→ wrap and Home/End jump, skipping disabled tabs, and move the selection with them. Inactive panels stay mounted but hidden. If `value` names no enabled tab, the first enabled tab is shown so the tab list stays reachable by keyboard (`onValueChange` is not called for this). |
 | `Tooltip` | Shows on hover after 300ms and immediately on keyboard focus. Hides on leave, blur or Escape. The pointer can move onto the tooltip without it closing. It is linked with `aria-describedby`. `disabled` renders just the child. |
 | `Toast` | Toasts stack bottom-right, or full width on phones. They dismiss themselves after `duration` (`Infinity` keeps a toast until closed) and pause while hovered or focused. Each has a × button. The list is a polite live region, and error toasts use `role="alert"`. Variants: success · info · warning · error. |
 
-, named `<Component><Prop>`:
+The props' finite unions are exported as types, named `<Component><Prop>`:
 `ButtonVariant`, `TextTone`, `HeadingLevel`, `AlertVariant` and so on.
 `Space` is the type of every `gap` prop: a multiple of the 6px unit
 (`gap={2}` is 12px).
@@ -144,6 +144,58 @@ Accessibility notes:
   placeholder.
 - `Text` offers only the tones that pass WCAG AA contrast. On this palette,
   primary, success, warning and info fail as text on light surfaces.
+- Known contrast exceptions come from the agreed token pairs, pending a design
+  decision: the tinted `primary` Badge (2.6:1), white on `success` (3.1:1) and
+  `info` (4.1:1) Badges, `error` Text on the page background (4.1–4.3:1), and
+  the `destructive` Button (3.5–3.7:1), which mirrors the website's
+  `bg-destructive/10 text-destructive` button.
+
+## Using with Tailwind
+
+Import the library stylesheet **after** Tailwind's CSS:
+
+```tsx
+import "./index.css";               // @tailwind base; @tailwind components; @tailwind utilities;
+import "@vikalpshakya/ui/styles.css";
+```
+
+- The library's rules are plain class selectors, not cascade layers. Tailwind
+  v3 base styles (and plugins such as `flowbite/plugin` or
+  `@tailwindcss/forms`, which restyle `[type="checkbox"]`, `[type="radio"]`
+  and `select`) otherwise override the components. Checkbox, Radio, Switch and
+  Select are hardened against those plugins' rules as long as the library CSS
+  loads after them.
+- Tailwind utility classes passed in `className` can't reliably override a
+  property the library sets. In Tailwind v4 they never can: utilities live in
+  a cascade layer, and the library's unlayered rules always beat layered ones.
+  In Tailwind v3 it depends on stylesheet order. Use a component prop, the
+  `style` prop, or your own more specific selector instead. Properties the
+  library doesn't set (margins, `max-width`, and so on) are fine as utilities.
+
+## Using with Astro
+
+Static components (Button, Card, Text, layout, form fields, Alert, Table, and
+so on) render to plain HTML in `.astro` files with no hydration and no
+JavaScript.
+
+Interactive components need a React `client:*` directive to work:
+`Dialog`, `Dropdown`, `Tabs`, `Tooltip` and `Toast`, plus Avatar's image
+fallback and Checkbox's `indeterminate`. Without one they render their initial
+HTML but don't respond.
+
+Each hydrated component is its own React root (an Astro island), so context
+doesn't cross islands. `ToastProvider` and every component calling
+`useToast()` must live inside the same island:
+
+```astro
+<AppShell client:load />  <!-- ToastProvider and its useToast() callers inside -->
+```
+
+## Known limitations
+
+- A `Dropdown` inside a `Table` gets clipped: the table's horizontal-scroll
+  wrapper cuts the menu off. Place row-action menus outside the scrolling
+  table until menus render in the browser's top layer.
 
 ## Theming
 
@@ -185,9 +237,11 @@ To override a token, redefine it after importing the stylesheet:
 }
 ```
 
-The stylesheet defines only `--ui-*` variables and `.ui-*` classes. It has no
-resets and no `body`, heading, or bare element selectors, so importing it
-doesn't change the rest of the app.
+The stylesheet defines `--ui-*` variables and `.ui-*` classes. It has no resets
+and no `body`, heading or bare element selectors, so importing it doesn't
+restyle the rest of the app. Two rules reach outside a component: elements with
+a `ui-` class and the `hidden` attribute stay hidden, and page scrolling is
+locked while a `Dialog` is open.
 
 ## Conventions for new components
 

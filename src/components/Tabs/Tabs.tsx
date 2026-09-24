@@ -1,7 +1,9 @@
 import {
   createContext,
   forwardRef,
+  useCallback,
   useContext,
+  useEffect,
   useId,
   useState,
   type ButtonHTMLAttributes,
@@ -12,10 +14,21 @@ import {
 import { cx } from "../../utils/cx";
 import "./Tabs.css";
 
+interface TriggerInfo {
+  id?: string;
+  disabled: boolean;
+}
+
 interface TabsContextValue {
+  /** The selected value actually shown (see the fallback in Tabs). */
   value: string;
   select: (value: string) => void;
-  idFor: (part: "trigger" | "panel", value: string) => string;
+  /** Rendered ids: the consumer's `id` when given, else generated. */
+  triggerId: (value: string) => string;
+  panelId: (value: string) => string;
+  registerTrigger: (value: string, info: TriggerInfo) => void;
+  unregisterTrigger: (value: string) => void;
+  setPanelId: (value: string, id: string | undefined) => void;
 }
 
 const TabsContext = createContext<TabsContextValue | null>(null);
@@ -41,17 +54,58 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(function Tabs(
   ref,
 ) {
   const [uncontrolled, setUncontrolled] = useState(defaultValue ?? "");
-  const current = value ?? uncontrolled;
+  const requested = value ?? uncontrolled;
   const baseId = useId();
+
+  // Triggers register in mount (= DOM) order; Map.set on an existing key keeps its place
+  const [triggers, setTriggers] = useState(() => new Map<string, TriggerInfo>());
+  const [panelIds, setPanelIds] = useState(() => new Map<string, string>());
+
+  // Keyboard users need one reachable tab. If the requested value names no
+  // enabled tab, show the first enabled one instead (onValueChange is not called).
+  const enabled = [...triggers].filter(([, t]) => !t.disabled).map(([v]) => v);
+  const current =
+    triggers.size === 0 || enabled.includes(requested) ? requested : (enabled[0] ?? requested);
+
+  const registerTrigger = useCallback((v: string, info: TriggerInfo) => {
+    setTriggers((prev) => {
+      const old = prev.get(v);
+      if (old && old.id === info.id && old.disabled === info.disabled) return prev;
+      return new Map(prev).set(v, info);
+    });
+  }, []);
+  const unregisterTrigger = useCallback((v: string) => {
+    setTriggers((prev) => {
+      if (!prev.has(v)) return prev;
+      const next = new Map(prev);
+      next.delete(v);
+      return next;
+    });
+  }, []);
+  const setPanelId = useCallback((v: string, id: string | undefined) => {
+    setPanelIds((prev) => {
+      if (prev.get(v) === id) return prev;
+      const next = new Map(prev);
+      if (id === undefined) next.delete(v);
+      else next.set(v, id);
+      return next;
+    });
+  }, []);
+
+  // Whitespace would split an IDREF list, so it cannot appear in an id
+  const generatedId = (part: string, v: string) => `${baseId}-${part}-${v.replace(/\s/g, "-")}`;
 
   const context: TabsContextValue = {
     value: current,
     select(next) {
       if (value === undefined) setUncontrolled(next);
-      if (next !== current) onValueChange?.(next);
+      if (next !== requested) onValueChange?.(next);
     },
-    // Whitespace would split an IDREF list, so it cannot appear in an id
-    idFor: (part, v) => `${baseId}-${part}-${v.replace(/\s/g, "-")}`,
+    triggerId: (v) => triggers.get(v)?.id ?? generatedId("trigger", v),
+    panelId: (v) => panelIds.get(v) ?? generatedId("panel", v),
+    registerTrigger,
+    unregisterTrigger,
+    setPanelId,
   };
 
   return (
@@ -111,18 +165,22 @@ export interface TabsTriggerProps
 }
 
 export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
-  function TabsTrigger({ value, className, onClick, ...props }, ref) {
+  function TabsTrigger({ value, id, disabled = false, className, onClick, ...props }, ref) {
     const tabs = useTabs("TabsTrigger");
+    const { registerTrigger, unregisterTrigger } = tabs;
+    useEffect(() => registerTrigger(value, { id, disabled }), [value, id, disabled, registerTrigger]);
+    useEffect(() => () => unregisterTrigger(value), [value, unregisterTrigger]);
     const selected = tabs.value === value;
     return (
       <button
         type="button"
         {...props}
         ref={ref}
+        disabled={disabled}
         role="tab"
-        id={tabs.idFor("trigger", value)}
+        id={id ?? tabs.triggerId(value)}
         aria-selected={selected}
-        aria-controls={tabs.idFor("panel", value)}
+        aria-controls={tabs.panelId(value)}
         tabIndex={selected ? 0 : -1}
         className={cx("ui-tabs-trigger", className)}
         onClick={(event) => {
@@ -140,16 +198,21 @@ export interface TabsContentProps extends HTMLAttributes<HTMLDivElement> {
 
 /** role="tabpanel", labelled by its tab. Inactive panels stay mounted but hidden. */
 export const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(
-  function TabsContent({ value, className, ...props }, ref) {
+  function TabsContent({ value, id, className, ...props }, ref) {
     const tabs = useTabs("TabsContent");
+    const { setPanelId } = tabs;
+    useEffect(() => {
+      setPanelId(value, id);
+      return () => setPanelId(value, undefined);
+    }, [value, id, setPanelId]);
     return (
       <div
         tabIndex={0}
         {...props}
         ref={ref}
         role="tabpanel"
-        id={tabs.idFor("panel", value)}
-        aria-labelledby={tabs.idFor("trigger", value)}
+        id={id ?? tabs.panelId(value)}
+        aria-labelledby={tabs.triggerId(value)}
         hidden={tabs.value !== value}
         className={cx("ui-tabs-content", className)}
       />

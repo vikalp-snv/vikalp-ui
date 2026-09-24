@@ -1,6 +1,7 @@
 import {
   createContext,
   forwardRef,
+  useCallback,
   useContext,
   useEffect,
   useId,
@@ -23,8 +24,10 @@ interface DropdownContextValue {
   /** Opening moves focus into the menu; closing with restoreFocus returns it to the trigger. */
   setOpen: (open: boolean, focus?: FocusTarget | "trigger") => void;
   focusOnOpen: FocusTarget;
+  /** The ids actually rendered: the consumer's `id` when given, else generated. */
   triggerId: string;
   menuId: string;
+  setCustomId: (part: "trigger" | "menu", id: string | undefined) => void;
 }
 
 const DropdownContext = createContext<DropdownContextValue | null>(null);
@@ -50,7 +53,15 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(function Dropd
   const [open, setOpenState] = useState(false);
   const [focusOnOpen, setFocusOnOpen] = useState<FocusTarget>("first");
   const id = useId();
-  const triggerId = `${id}-trigger`;
+  // A consumer `id` on DropdownTrigger/DropdownMenu replaces the generated one
+  const [customIds, setCustomIds] = useState<{ trigger?: string; menu?: string }>({});
+  const triggerId = customIds.trigger ?? `${id}-trigger`;
+  const menuId = customIds.menu ?? `${id}-menu`;
+  const setCustomId = useCallback(
+    (part: "trigger" | "menu", customId: string | undefined) =>
+      setCustomIds((ids) => (ids[part] === customId ? ids : { ...ids, [part]: customId })),
+    [],
+  );
 
   useEffect(() => {
     if (!open) return;
@@ -65,7 +76,8 @@ export const Dropdown = forwardRef<HTMLDivElement, DropdownProps>(function Dropd
     open,
     focusOnOpen,
     triggerId,
-    menuId: `${id}-menu`,
+    menuId,
+    setCustomId,
     setOpen(next, focus) {
       if (focus === "first" || focus === "last") setFocusOnOpen(focus);
       setOpenState(next);
@@ -95,13 +107,20 @@ export interface DropdownTriggerProps extends ButtonHTMLAttributes<HTMLButtonEle
 
 /** A Button with aria-haspopup/expanded. Enter, Space, ↓ open on the first item; ↑ on the last. */
 export const DropdownTrigger = forwardRef<HTMLButtonElement, DropdownTriggerProps>(
-  function DropdownTrigger({ variant = "outline", onClick, onKeyDown, ...props }, ref) {
+  function DropdownTrigger(
+    { variant = "outline", type = "button", id, onClick, onKeyDown, ...props },
+    ref,
+  ) {
     const dropdown = useDropdown("DropdownTrigger");
+    const { setCustomId } = dropdown;
+    useEffect(() => setCustomId("trigger", id), [id, setCustomId]);
     return (
       <Button
         {...props}
         ref={ref}
-        id={dropdown.triggerId}
+        // "button", not the native "submit": opening a menu must never submit a form
+        type={type}
+        id={id ?? dropdown.triggerId}
         variant={variant}
         aria-haspopup="menu"
         aria-expanded={dropdown.open}
@@ -132,8 +151,10 @@ const itemSelector = '[role^="menuitem"]';
 
 /** role="menu". ↑/↓ wrap, Home/End jump, Escape closes and refocuses the trigger. */
 export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
-  function DropdownMenu({ align = "start", className, onKeyDown, ...props }, ref) {
+  function DropdownMenu({ align = "start", id, className, onKeyDown, ...props }, ref) {
     const dropdown = useDropdown("DropdownMenu");
+    const { setCustomId } = dropdown;
+    useEffect(() => setCustomId("menu", id), [id, setCustomId]);
     const menuRef = useRef<HTMLDivElement>(null);
     useImperativeHandle(ref, () => menuRef.current!, []);
 
@@ -174,7 +195,7 @@ export const DropdownMenu = forwardRef<HTMLDivElement, DropdownMenuProps>(
       <div
         {...props}
         ref={menuRef}
-        id={dropdown.menuId}
+        id={id ?? dropdown.menuId}
         role="menu"
         aria-labelledby={dropdown.triggerId}
         hidden={!dropdown.open}

@@ -1,6 +1,21 @@
 {
   "name": "@vikalpshakya/ui",
   "version": "0.1.0",
+  "description": "Simnovus React component library: semantic design tokens, light/dark themes and accessible components.",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vikalp-snv/vikalp-ui.git"
+  },
+  "keywords": [
+    "react",
+    "components",
+    "ui",
+    "design-system",
+    "design-tokens",
+    "typescript",
+    "simnovus"
+  ],
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",

@@ -36,9 +36,10 @@
   font-weight: var(--ui-font-weight-bold);
 }
 
+/* Secondary pair: muted-foreground on muted is 4.25:1, short of AA */
 .ui-table > thead > tr > th {
-  background-color: var(--ui-muted);
-  color: var(--ui-muted-foreground);
+  background-color: var(--ui-secondary);
+  color: var(--ui-secondary-foreground);
   font-size: var(--ui-font-size-xs);
   white-space: nowrap;
 }

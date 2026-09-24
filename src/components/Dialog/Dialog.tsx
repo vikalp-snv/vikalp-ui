@@ -185,12 +185,14 @@ export interface DialogCloseProps extends ButtonHTMLAttributes<HTMLButtonElement
 
 /** A Button that closes the dialog; call event.preventDefault() in onClick to keep it open. */
 export const DialogClose = forwardRef<HTMLButtonElement, DialogCloseProps>(
-  function DialogClose({ variant = "outline", onClick, ...props }, ref) {
+  function DialogClose({ variant = "outline", type = "button", onClick, ...props }, ref) {
     const { close } = useDialog("DialogClose");
     return (
       <Button
         {...props}
         ref={ref}
+        // "button", not the native "submit": Cancel inside a form must not submit it
+        type={type}
         variant={variant}
         onClick={(event) => {
           onClick?.(event);

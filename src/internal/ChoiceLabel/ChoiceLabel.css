@@ -23,12 +23,15 @@
    border uses muted-foreground because --ui-input (#e2e8f0) is only 1.2:1,
    below the 3:1 WCAG minimum for a control's boundary. */
 .ui-choice-control {
+  /* Components recolor through these, never by out-specifying each other */
+  --ui-choice-border: var(--ui-muted-foreground);
+  --ui-choice-fill: var(--ui-background);
   appearance: none;
   flex-shrink: 0;
   box-sizing: border-box;
   margin: 0;
-  border: 1px solid var(--ui-muted-foreground);
-  background-color: var(--ui-background);
+  border: 1px solid var(--ui-choice-border);
+  background-color: var(--ui-choice-fill);
   color-scheme: var(--ui-color-scheme);
   cursor: pointer;
   transition:
@@ -42,12 +45,29 @@
   box-shadow: var(--ui-focus-ring);
 }
 
+/* Form-control plugins (flowbite, @tailwindcss/forms) ring any :focus,
+   mouse clicks included; keep the ring keyboard-only like everywhere else */
+.ui-choice-control:focus:not(:focus-visible) {
+  box-shadow: none;
+}
+
 .ui-choice-control:checked {
-  border-color: var(--ui-primary);
+  --ui-choice-border: var(--ui-primary);
 }
 
 .ui-choice-control[aria-invalid="true"] {
-  border-color: var(--ui-error);
+  --ui-choice-border: var(--ui-error);
+}
+
+/* Those plugins restyle checked inputs through [type="checkbox"] and
+   [type="radio"] selectors weighing up to (0,3,0), e.g.
+   `.dark [type="checkbox"]:checked` (blue fill + check-mark image).
+   Repeating the class matches that weight, so with the library CSS loaded
+   after Tailwind the tokens win. */
+.ui-choice-control.ui-choice-control:is(:checked, :indeterminate) {
+  border-color: var(--ui-choice-border);
+  background-color: var(--ui-choice-fill);
+  background-image: none;
 }
 
 .ui-choice-control:disabled {
