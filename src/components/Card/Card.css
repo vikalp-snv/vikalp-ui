@@ -1,0 +1,40 @@
+/* The website's token card (BlogCard / BlogFilterGrid):
+   rounded-2xl border border-border bg-card shadow-xs p-4 sm:p-5 */
+.ui-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-spacing-lg);
+  padding: var(--ui-spacing-lg);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-2xl);
+  background-color: var(--ui-color-surface);
+  box-shadow: var(--ui-shadow-xs);
+  color: var(--ui-color-text-primary);
+  font-family: var(--ui-font-family-sans);
+}
+
+@media (min-width: 640px) {
+  .ui-card {
+    padding: var(--ui-spacing-xl);
+  }
+}
+
+/* hover:-translate-y-1 hover:shadow-lg hover:border-primary/40 duration-300 */
+.ui-card-interactive {
+  transition:
+    transform var(--ui-duration) ease,
+    box-shadow var(--ui-duration) ease,
+    border-color var(--ui-duration) ease;
+}
+
+.ui-card-interactive:hover {
+  border-color: color-mix(in srgb, var(--ui-color-primary) 40%, transparent);
+  box-shadow: var(--ui-shadow-lg);
+  transform: translateY(calc(var(--ui-spacing-unit) * -1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-card-interactive:hover {
+    transform: none;
+  }
+}

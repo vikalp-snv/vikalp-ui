@@ -1,0 +1,41 @@
+/* The website's blog search input: rounded-xl border-input bg-background text-sm
+   focus:border-primary. Height matches Button md so they align in a row, and the
+   focus ring uses the shared --ui-focus-ring instead of the one-off ring-primary/20. */
+.ui-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--ui-control-height-md);
+  padding: 0 var(--ui-spacing-md);
+  border: 1px solid var(--ui-color-border);
+  border-radius: var(--ui-radius-xl);
+  background-color: var(--ui-color-background);
+  color: var(--ui-color-text-primary);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-sm);
+  transition:
+    border-color var(--ui-duration-fast) ease,
+    box-shadow var(--ui-duration-fast) ease;
+}
+
+.ui-input::placeholder {
+  color: var(--ui-color-text-secondary);
+}
+
+.ui-input:focus-visible {
+  outline: none;
+  border-color: var(--ui-color-primary);
+  box-shadow: var(--ui-focus-ring);
+}
+
+.ui-input[aria-invalid="true"] {
+  border-color: var(--ui-color-error);
+}
+
+.ui-input[aria-invalid="true"]:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-color-error) 20%, transparent);
+}
+
+.ui-input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
