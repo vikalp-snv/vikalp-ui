@@ -1,25 +1,30 @@
-import type { HTMLAttributes } from "react";
+import { forwardRef, type HTMLAttributes } from "react";
 
+import { cx } from "../../utils/cx";
 import "./Badge.css";
 
+export type BadgeVariant =
+  | "primary"
+  | "solid"
+  | "neutral"
+  | "success"
+  | "warning"
+  | "error"
+  | "info";
+
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  variant?:
-    | "primary"
-    | "solid"
-    | "neutral"
-    | "success"
-    | "warning"
-    | "error"
-    | "info";
+  variant?: BadgeVariant;
 }
 
-export function Badge({ variant = "primary", className, ...props }: BadgeProps) {
+export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
+  { variant = "primary", className, ...props },
+  ref,
+) {
   return (
     <span
       {...props}
-      className={["ui-badge", `ui-badge-${variant}`, className]
-        .filter(Boolean)
-        .join(" ")}
+      ref={ref}
+      className={cx("ui-badge", `ui-badge-${variant}`, className)}
     />
   );
-}
+});

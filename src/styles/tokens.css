@@ -1,62 +1,39 @@
 /*
- * Simnovus design tokens, namespaced as --ui-* so they never collide with a
- * consumer's own variables (e.g. a bare --border or --accent).
+ * Theme-independent design tokens. Colors live in theme.css.
  *
- * Values mirror website/uxtokens.md, generated into website/src/styles/global.css.
- * ponytail: hand-synced copy for the POC; production moves uxtokens.md + the
- * generator here so this file becomes the only place values live.
+ * Everything is namespaced --ui-* so it never collides with a consumer's own
+ * variables (the website and React apps already define bare --border, --accent).
+ * Values mirror website/uxtokens.md and website/src/styles/global.css.
+ * ponytail: hand-synced copy; move uxtokens.md + its generator here once the
+ * website consumes this package, so values live in one place.
  */
 :root {
-  /* Core colors (uxtokens.md §1) */
-  --ui-color-primary: #7c3aed;              /* POC TEMP: centralization test (was #f16e22) */
-  --ui-color-primary-foreground: #2b2e36;   /*                    → --primary-foreground */
-  --ui-color-background: #f8fafc;           /* Background (App)   → --background */
-  --ui-color-surface: #ffffff;              /* Surface            → --card */
-  --ui-color-text-primary: #0f172a;         /* Text - Primary     → --foreground */
-  --ui-color-text-secondary: #64748b;       /* Text - Secondary   → --muted-foreground */
-  --ui-color-subtle-surface: #f0f2f9;       /* Subtle Surface     → --subtle-surface / --muted */
-  --ui-color-border: #e2e8f0;               /* Borders            → --border / --input */
+  /* Spacing: the single 6px unit from uxtokens.md §3 (Tailwind --spacing: 6px).
+     Components write calc(var(--ui-spacing) * N), where N is the Tailwind step
+     the design came from (px-3 → 3). No named scale until design defines one. */
+  --ui-spacing: 6px;
 
-  /* Semantic colors (uxtokens.md §1, same in light and dark) */
-  --ui-color-success: #28a745;
-  --ui-color-success-foreground: #ffffff;
-  --ui-color-warning: #ffc107;
-  --ui-color-warning-foreground: #000000;
-  --ui-color-error: #dc3545;                /* → --error / --destructive */
-  --ui-color-error-foreground: #ffffff;
-  --ui-color-info: #0284c7;
-  --ui-color-info-foreground: #ffffff;
+  /* Control heights, shared so Button and Input align in a row.
+     Website Button xs/default/lg = h-5/h-6/h-8, one unit taller from 640px. */
+  --ui-control-height-sm: calc(var(--ui-spacing) * 5);
+  --ui-control-height-md: calc(var(--ui-spacing) * 6);
+  --ui-control-height-lg: calc(var(--ui-spacing) * 8);
 
-  --ui-color-white: #ffffff;
-  --ui-color-black: #000000;
-
-  /* Spacing: one 6px unit (uxtokens.md §3, Tailwind --spacing: 6px) */
-  --ui-spacing-unit: 6px;
-  --ui-spacing-xs: calc(var(--ui-spacing-unit) * 1);
-  --ui-spacing-sm: calc(var(--ui-spacing-unit) * 2);
-  --ui-spacing-md: calc(var(--ui-spacing-unit) * 3);
-  --ui-spacing-lg: calc(var(--ui-spacing-unit) * 4);
-  --ui-spacing-xl: calc(var(--ui-spacing-unit) * 5);
-
-  /* Control heights: website Button xs/default/lg = h-5/h-6/h-8 (+1 unit at ≥640px) */
-  --ui-control-height-sm: calc(var(--ui-spacing-unit) * 5);
-  --ui-control-height-md: calc(var(--ui-spacing-unit) * 6);
-  --ui-control-height-lg: calc(var(--ui-spacing-unit) * 8);
-
-  /* Radius: website --radius: 0.625rem with the same multipliers */
-  --ui-radius: 10px;
+  /* Radius: one knob, same multipliers as the website's --radius-* */
+  --ui-radius: 0.625rem;
   --ui-radius-sm: calc(var(--ui-radius) * 0.6);
   --ui-radius-md: calc(var(--ui-radius) * 0.8);
   --ui-radius-lg: var(--ui-radius);
   --ui-radius-xl: calc(var(--ui-radius) * 1.4);
   --ui-radius-2xl: calc(var(--ui-radius) * 1.8);
   --ui-radius-3xl: calc(var(--ui-radius) * 2.2);
+  --ui-radius-4xl: calc(var(--ui-radius) * 2.6);
   --ui-radius-full: 9999px;
 
-  /* Typography (uxtokens.md §2). Consumers that self-host fonts override the
-     family, e.g. --ui-font-family-sans: var(--font-sans) on the Astro site. */
+  /* Typography (uxtokens.md §2). The library never loads fonts; the consumer
+     does, and may point these at its own faces, e.g. var(--font-sans) on Astro. */
   --ui-font-family-sans: "Fira Sans", sans-serif;
-  --ui-font-family-mono: "Ubuntu Mono", monospace;
+  --ui-font-family-mono: "Ubuntu Mono", monospace; /* logs, code, terminal output */
   --ui-font-size-xs: 12px;
   --ui-font-size-sm: 14px;
   --ui-font-size-md: 16px;
@@ -69,37 +46,15 @@
   --ui-duration-fast: 150ms;
   --ui-duration: 300ms;
 
-  /* Effects */
-  --ui-focus-ring: 0 0 0 3px color-mix(in srgb, var(--ui-color-primary) 50%, transparent);
+  /* Elevation (Tailwind shadow-xs / shadow-lg as used by the website cards) */
   --ui-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 5%);
   --ui-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);
-  --ui-shadow:                              /* → --box-shadow */
-    0 2px 6px rgb(100 116 139 / 15%),
-    0 8px 24px rgb(100 116 139 / 20%),
-    0 16px 32px rgb(100 116 139 / 20%);
 }
 
-/* Website Button grows one unit from Tailwind's sm breakpoint */
 @media (min-width: 640px) {
   :root {
-    --ui-control-height-sm: calc(var(--ui-spacing-unit) * 6);
-    --ui-control-height-md: calc(var(--ui-spacing-unit) * 7);
-    --ui-control-height-lg: calc(var(--ui-spacing-unit) * 9);
+    --ui-control-height-sm: calc(var(--ui-spacing) * 6);
+    --ui-control-height-md: calc(var(--ui-spacing) * 7);
+    --ui-control-height-lg: calc(var(--ui-spacing) * 9);
   }
-}
-
-/* Same .dark-on-an-ancestor convention as the website */
-.dark {
-  --ui-color-primary: #ff7a2f;
-  --ui-color-primary-foreground: #333742;
-  --ui-color-background: #0b131b;
-  --ui-color-surface: #13222f;
-  --ui-color-text-primary: #f8fafc;
-  --ui-color-text-secondary: #94a3b8;
-  --ui-color-subtle-surface: #0f172a;
-  --ui-color-border: #334155;
-  --ui-shadow:
-    0 2px 6px rgb(0 0 0 / 40%),
-    0 8px 24px rgb(0 0 0 / 50%),
-    0 16px 32px rgb(0 0 0 / 60%);
 }

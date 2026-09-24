@@ -1,151 +1,124 @@
-# @vikalp/ui
+# @vikalpshakya/ui
 
-A reusable React component library built with TypeScript and Vite.
+Simnovus React component library (POC). It is built on semantic design tokens,
+so the same components work in light and dark themes, in React apps, and in
+Astro pages (as static HTML, with no hydration).
 
-## How the library is organized
+## Install and use
 
-```text
-src/
-  index.ts                    Public package entry point
-  styles/tokens.css           Shared design decisions
-  components/
-    index.ts                  Public component barrel
-    Button/
-      Button.tsx              Component behavior and API
-      Button.css              Component styles
-      index.ts                Button's public exports
+```bash
+npm install @vikalpshakya/ui
 ```
 
-- `package.json` defines the package name, public files, entry points, scripts,
-  peer dependencies, and development tools.
-- `package-lock.json` locks exact dependency versions so installs are repeatable.
-- `tsconfig.json` controls strict TypeScript checking and React JSX compilation.
-- `vite.config.ts` builds ESM and CommonJS JavaScript, extracts CSS, keeps React
-  outside the bundle, and generates TypeScript declarations.
-- `src/index.ts` is the only public entrance to the library. Export something
-  here, directly or through a barrel, before consumers can import it.
-- `tokens.css` stores reusable design values. Components should consume these
-  variables instead of repeating raw colors, spacing, and typography values.
-
-## Design tokens and theming
-
-The package ships namespaced Simnovus tokens for core colors, semantic states,
-typography, a 6px spacing scale, control heights, radii, focus, and shadows.
-Namespacing them as `--ui-*` prevents collisions with consuming applications.
-
-Light mode is the default. Add `dark` to an ancestor, commonly the root HTML
-element, to activate the dark palette for every nested library component:
+Load the stylesheet once near the app root, then import components:
 
 ```tsx
-document.documentElement.classList.toggle("dark", isDarkMode);
-```
-
-The library references Fira Sans and Ubuntu Mono but does not download fonts.
-The consuming application should load those font files or web-font imports;
-otherwise the browser uses the declared generic fallbacks.
-
-Applications may override tokens after importing the package stylesheet:
-
-```css
-:root {
-  --ui-radius-md: 6px;
-}
-```
-
-## Why React is listed twice
-
-React is a `peerDependency` because the consuming application must provide it.
-Bundling a second React copy can break hooks and increases bundle size. React is
-also a `devDependency` so this repository can compile and type-check components.
-
-## Development workflow
-
-Install dependencies once:
-
-```bash
-npm install
-```
-
-Check TypeScript while developing:
-
-```bash
-npm run typecheck
-```
-
-Build the publishable package:
-
-```bash
-npm run build
-```
-
-The build creates `dist/index.js`, `dist/index.cjs`, `dist/styles.css`, and
-declaration files. Inspect what npm would publish without publishing it:
-
-```bash
-npm pack --dry-run
-```
-
-## Using the library locally
-
-From another React project's directory, install this repository by path:
-
-```bash
-npm install ../vikalp-ui
-```
-
-Load the library styles once near that application's root:
-
-```tsx
-import "@vikalp/ui/styles.css";
-```
-
-Then use components normally:
-
-```tsx
-import { Button } from "@vikalp/ui";
+import "@vikalpshakya/ui/styles.css";
+import { Badge, Button, Card, Input } from "@vikalpshakya/ui";
 
 export function SaveAction() {
   return <Button variant="primary">Save</Button>;
 }
 ```
 
-After changing this library, rebuild it. Reinstall the local package in the
-consumer if its package manager does not refresh path dependencies automatically.
+React 18 and 19 are supported. They are peer dependencies, so the app provides React.
 
-## Adding a component
+## Components
 
-For a new `Input` component:
+Each component accepts its native element's props (including `className`) and
+forwards `ref` to that element.
 
-1. Create `src/components/Input/Input.tsx` and define `InputProps` from the
-   matching native HTML attributes where possible.
-2. Create `src/components/Input/Input.css`. Use `--ui-*` tokens for shared
-   visual decisions and a unique `.ui-input` class prefix.
-3. Create `src/components/Input/index.ts` and export both the component and its
-   prop type.
-4. Re-export them from `src/components/index.ts`.
-5. Run `npm run build` and verify the declarations in `dist` are generated.
-6. Exercise the component in a real consumer before publishing it.
+| Component | Props | Renders |
+|---|---|---|
+| `Button` | `variant`: primary · secondary · outline · ghost · destructive; `size`: sm · md · lg · icon; `loading`; `href` | `<button>`, or `<a>` when `href` is set |
+| `Badge` | `variant`: primary · solid · neutral · success · warning · error · info | `<span>` |
+| `Card` | `interactive` (hover/focus lift) | `<div>` |
+| `Input` | states via `disabled` and `aria-invalid` | `<input>` |
 
-Keep component APIs small. Prefer native HTML props, semantic elements, visible
-focus states, keyboard support, and explicit variants over one-off style props.
+The variant and size unions are exported as types: `ButtonVariant`, `ButtonSize`,
+and `BadgeVariant`.
 
-## Recommended next steps
+Accessibility notes:
+- `Input` has no built-in label. Wrap it in a `<label>` or give it `aria-label`.
+- An icon-only `Button` needs an `aria-label`.
+- A link `Button` cannot be natively disabled. Use `aria-disabled="true"` to
+  get the disabled style.
 
-Add these in this order as the library grows:
+## Theming
 
-1. **Storybook** for isolated component examples, states, and documentation.
-2. **Vitest and Testing Library** for interaction and accessibility behavior.
-3. **ESLint and Prettier** once more contributors need automated conventions.
-4. **Changesets** for versioning and changelogs across releases.
-5. **CI** to run type checking, tests, build, and `npm pack --dry-run` on pull
-   requests.
+Light is the default. To switch to dark, add the `dark` class to an ancestor,
+usually `<html>`. This is the same convention the Simnovus website uses:
 
-Before the first public release, confirm the npm scope is available, authenticate
-with `npm login`, and publish a public scoped package with:
-
-```bash
-npm publish --access public
+```ts
+document.documentElement.classList.toggle("dark", isDark);
 ```
 
-Use semantic versions: patch for fixes, minor for backward-compatible features,
-and major for breaking API changes.
+## Design tokens
+
+Components never hardcode values. They read CSS variables, and the variables are
+namespaced `--ui-*` so they don't collide with the app's own variables:
+
+```text
+component CSS → semantic token (--ui-primary) → theme (:root | .dark) → value (#F16E22)
+```
+
+| File | Contains |
+|---|---|
+| `src/styles/theme.css` | Semantic colors in light and dark: `--ui-primary`, `--ui-background`, `--ui-foreground`, `--ui-card`, `--ui-popover`, `--ui-muted`, `--ui-secondary`, `--ui-accent`, `--ui-border`, `--ui-input`, `--ui-ring`, plus each one's `-foreground`. Status colors: `--ui-success`, `--ui-warning`, `--ui-error`, `--ui-destructive`, `--ui-info`. |
+| `src/styles/tokens.css` | Theme-independent tokens. Spacing: `--ui-spacing: 6px`. Radius: `--ui-radius` plus `-sm` … `-4xl` and `-full`. Typography: `--ui-font-family-sans` (Fira Sans) and `--ui-font-family-mono` (Ubuntu Mono), sizes, and weights. Also control heights, motion, and shadows. |
+
+The color role names match the website's `global.css` (`--primary` ↔ `--ui-primary`).
+
+- **Spacing** is one 6px unit. Components write `calc(var(--ui-spacing) * N)`,
+  where `N` is the Tailwind step the design uses (`px-3` → 3).
+- **Fonts** are referenced but never downloaded. The app loads Fira Sans and
+  Ubuntu Mono; otherwise the browser uses the `sans-serif` and `monospace`
+  fallbacks.
+
+To override a token, redefine it after importing the stylesheet:
+
+```css
+:root {
+  --ui-font-family-sans: var(--font-sans); /* e.g. Astro's self-hosted face */
+}
+```
+
+The stylesheet defines only `--ui-*` variables and `.ui-*` classes. It has no
+resets and no `body`, heading, or bare element selectors, so importing it
+doesn't change the rest of the app.
+
+## Conventions for new components
+
+```text
+src/components/Name/
+  Name.tsx    forwardRef component; props extend the native element's attributes
+  Name.css    .ui-name and .ui-name-<modifier>; reads --ui-* tokens only
+  index.ts    exports the component and its types
+```
+
+- Re-export new components from `src/components/index.ts` and `src/index.ts`.
+  Nothing else is public.
+- Use finite unions for `variant` and `size`, and add them only where the
+  component actually has variants.
+- Use `cx()` from `src/utils/cx.ts` to compose class names.
+- Take states from the platform (`:disabled`, `:focus-visible`, `aria-invalid`)
+  instead of adding extra boolean props.
+- For focus, use `outline: 2px solid transparent` together with
+  `box-shadow: var(--ui-focus-ring)`. The transparent outline keeps focus
+  visible in forced-colors (high contrast) mode.
+- Don't write theme-specific component rules (`.dark .ui-x`). Add or reuse a
+  semantic token instead. The destructive Button tint is the one documented
+  exception; it mirrors the website's `dark:bg-destructive/20`.
+
+## Development
+
+```bash
+npm install
+npm run typecheck
+npm run build          # dist/index.js, index.cjs, styles.css, *.d.ts
+npm pack --dry-run     # inspect the package contents without publishing
+```
+
+To try changes in a local app, run `npm install ../vikalp-ui`. A symlinked
+(`file:`) install also needs `resolve: { dedupe: ["react", "react-dom"] }` in
+the app's Vite config.

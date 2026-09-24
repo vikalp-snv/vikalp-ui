@@ -1,5 +1,6 @@
-import type { HTMLAttributes } from "react";
+import { forwardRef, type HTMLAttributes } from "react";
 
+import { cx } from "../../utils/cx";
 import "./Card.css";
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
@@ -7,13 +8,15 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   interactive?: boolean;
 }
 
-export function Card({ interactive = false, className, ...props }: CardProps) {
+export const Card = forwardRef<HTMLDivElement, CardProps>(function Card(
+  { interactive = false, className, ...props },
+  ref,
+) {
   return (
     <div
       {...props}
-      className={["ui-card", interactive && "ui-card-interactive", className]
-        .filter(Boolean)
-        .join(" ")}
+      ref={ref}
+      className={cx("ui-card", interactive && "ui-card-interactive", className)}
     />
   );
-}
+});

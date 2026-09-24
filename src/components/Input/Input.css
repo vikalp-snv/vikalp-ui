@@ -5,11 +5,12 @@
   box-sizing: border-box;
   width: 100%;
   height: var(--ui-control-height-md);
-  padding: 0 var(--ui-spacing-md);
-  border: 1px solid var(--ui-color-border);
+  padding: 0 calc(var(--ui-spacing) * 3);
+  border: 1px solid var(--ui-input);
   border-radius: var(--ui-radius-xl);
-  background-color: var(--ui-color-background);
-  color: var(--ui-color-text-primary);
+  background-color: var(--ui-background);
+  color: var(--ui-foreground);
+  color-scheme: var(--ui-color-scheme); /* date/number widgets follow the theme */
   font-family: var(--ui-font-family-sans);
   font-size: var(--ui-font-size-sm);
   transition:
@@ -18,21 +19,22 @@
 }
 
 .ui-input::placeholder {
-  color: var(--ui-color-text-secondary);
+  color: var(--ui-muted-foreground);
 }
 
+/* Transparent outline keeps focus visible in forced-colors mode (see Button) */
 .ui-input:focus-visible {
-  outline: none;
-  border-color: var(--ui-color-primary);
+  outline: 2px solid transparent;
+  border-color: var(--ui-ring);
   box-shadow: var(--ui-focus-ring);
 }
 
 .ui-input[aria-invalid="true"] {
-  border-color: var(--ui-color-error);
+  border-color: var(--ui-error);
 }
 
 .ui-input[aria-invalid="true"]:focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-color-error) 20%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-error) 20%, transparent);
 }
 
 .ui-input:disabled {

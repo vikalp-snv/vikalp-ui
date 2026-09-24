@@ -2,9 +2,9 @@
 .ui-badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--ui-spacing-xs);
+  gap: var(--ui-spacing);
   width: fit-content; /* never stretch inside a flex column such as .ui-card */
-  padding: calc(var(--ui-spacing-unit) * 0.5) calc(var(--ui-spacing-unit) * 2.5);
+  padding: calc(var(--ui-spacing) * 0.5) calc(var(--ui-spacing) * 2.5);
   border: 1px solid transparent;
   border-radius: var(--ui-radius-full);
   font-family: var(--ui-font-family-sans);
@@ -16,41 +16,41 @@
 
 /* bg-primary/10 text-primary border-primary/20 */
 .ui-badge-primary {
-  border-color: color-mix(in srgb, var(--ui-color-primary) 20%, transparent);
-  background-color: color-mix(in srgb, var(--ui-color-primary) 10%, transparent);
-  color: var(--ui-color-primary);
+  border-color: color-mix(in srgb, var(--ui-primary) 20%, transparent);
+  background-color: color-mix(in srgb, var(--ui-primary) 10%, transparent);
+  color: var(--ui-primary);
 }
 
 /* "Featured Article": uses primary-foreground, not the website's white (3.0:1) */
 .ui-badge-solid {
-  background-color: var(--ui-color-primary);
-  color: var(--ui-color-primary-foreground);
+  background-color: var(--ui-primary);
+  color: var(--ui-primary-foreground);
 }
 
 /* ProductsSection tags, re-expressed with tokens instead of slate-* */
 .ui-badge-neutral {
-  border-color: var(--ui-color-border);
-  background-color: var(--ui-color-subtle-surface);
-  color: var(--ui-color-text-secondary);
+  border-color: var(--ui-border);
+  background-color: var(--ui-muted);
+  color: var(--ui-muted-foreground);
 }
 
 /* Status colors with their agreed foreground pairs (uxtokens.md) */
 .ui-badge-success {
-  background-color: var(--ui-color-success);
-  color: var(--ui-color-success-foreground);
+  background-color: var(--ui-success);
+  color: var(--ui-success-foreground);
 }
 
 .ui-badge-warning {
-  background-color: var(--ui-color-warning);
-  color: var(--ui-color-warning-foreground);
+  background-color: var(--ui-warning);
+  color: var(--ui-warning-foreground);
 }
 
 .ui-badge-error {
-  background-color: var(--ui-color-error);
-  color: var(--ui-color-error-foreground);
+  background-color: var(--ui-error);
+  color: var(--ui-error-foreground);
 }
 
 .ui-badge-info {
-  background-color: var(--ui-color-info);
-  color: var(--ui-color-info-foreground);
+  background-color: var(--ui-info);
+  color: var(--ui-info-foreground);
 }

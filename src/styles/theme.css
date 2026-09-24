@@ -1,0 +1,78 @@
+/*
+ * Semantic color tokens. Components read only these, never raw hex values:
+ *   component → --ui-<role> → theme (:root | .dark) → value
+ *
+ * Role names match the website's global.css (--primary → --ui-primary …), so
+ * an app can alias one set to the other with a single line per token.
+ * Values: uxtokens.md; foregrounds not listed there come from global.css.
+ */
+
+/* Light (default) */
+:root {
+  --ui-color-scheme: light; /* native widgets inside library components */
+
+  --ui-primary: #f16e22;
+  --ui-primary-foreground: #2b2e36;
+  --ui-background: #f8fafc;
+  --ui-foreground: #0f172a;
+  --ui-card: #ffffff;
+  --ui-card-foreground: #0f172a;
+  --ui-popover: #ffffff;
+  --ui-popover-foreground: #0f172a;
+  --ui-subtle-surface: #f0f2f9;
+  --ui-muted: #f0f2f9;
+  --ui-muted-foreground: #64748b;
+  --ui-secondary: #f0f2f9;
+  --ui-secondary-foreground: #0f172a;
+  --ui-accent: #f0f2f9;
+  --ui-accent-foreground: #0f172a;
+  --ui-border: #e2e8f0;
+  --ui-input: #e2e8f0;
+  --ui-ring: #f16e22;
+}
+
+/* Dark: add class="dark" to any ancestor, usually <html> (same as the website) */
+.dark {
+  --ui-color-scheme: dark;
+
+  --ui-primary: #ff7a2f;
+  --ui-primary-foreground: #333742;
+  --ui-background: #0b131b;
+  --ui-foreground: #f8fafc;
+  --ui-card: #13222f;
+  --ui-card-foreground: #f8fafc;
+  --ui-popover: #13222f;
+  --ui-popover-foreground: #f8fafc;
+  --ui-subtle-surface: #0f172a;
+  --ui-muted: #0f172a;
+  --ui-muted-foreground: #94a3b8;
+  --ui-secondary: #0f172a;
+  --ui-secondary-foreground: #f8fafc;
+  --ui-accent: #0f172a;
+  --ui-accent-foreground: #f8fafc;
+  --ui-border: #334155;
+  --ui-input: #334155;
+  --ui-ring: #ff7a2f;
+}
+
+/* Status colors: identical in both themes */
+:root {
+  --ui-success: #28a745;
+  --ui-success-foreground: #ffffff;
+  --ui-warning: #ffc107;
+  --ui-warning-foreground: #000000;
+  --ui-error: #dc3545;
+  --ui-error-foreground: #ffffff;
+  --ui-destructive: #dc3545;
+  --ui-destructive-foreground: #ffffff;
+  --ui-info: #0284c7;
+  --ui-info-foreground: #ffffff;
+}
+
+/* Derived from a themed token, so it is re-declared on .dark: a var() in a
+   custom property resolves where it is declared, and :root alone would keep
+   the light ring inside a .dark subtree. */
+:root,
+.dark {
+  --ui-focus-ring: 0 0 0 3px color-mix(in srgb, var(--ui-ring) 50%, transparent);
+}

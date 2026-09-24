@@ -4,9 +4,9 @@
   flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  gap: calc(var(--ui-spacing-unit) * 1.5);
+  gap: calc(var(--ui-spacing) * 1.5);
   border: 1px solid transparent;
-  border-radius: var(--ui-radius-full); /* POC TEMP: centralization test (was --ui-radius-lg) */
+  border-radius: var(--ui-radius-lg);
   background-clip: padding-box;
   font-family: var(--ui-font-family-sans);
   font-weight: var(--ui-font-weight-bold);
@@ -23,9 +23,11 @@
     transform var(--ui-duration-fast) ease;
 }
 
+/* Transparent outline, not none: forced-colors mode drops box-shadow and
+   paints the outline instead, so keyboard focus stays visible there. */
 .ui-button:focus-visible {
-  outline: none;
-  border-color: var(--ui-color-primary);
+  outline: 2px solid transparent;
+  border-color: var(--ui-ring);
   box-shadow: var(--ui-focus-ring);
 }
 
@@ -33,42 +35,67 @@
   transform: translateY(1px);
 }
 
-.ui-button:disabled {
+/* aria-disabled covers link buttons, which have no native disabled state */
+.ui-button:disabled,
+.ui-button[aria-disabled="true"] {
   opacity: 0.5;
   pointer-events: none;
 }
 
 /* :where() keeps specificity at 0 so a consumer's icon class wins */
 :where(.ui-button) svg {
-  width: calc(var(--ui-spacing-unit) * 3.5);
-  height: calc(var(--ui-spacing-unit) * 3.5);
+  width: calc(var(--ui-spacing) * 3.5);
+  height: calc(var(--ui-spacing) * 3.5);
   flex-shrink: 0;
   pointer-events: none;
+}
+
+.ui-button-loading::before {
+  content: "";
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--ui-radius-full);
+  animation: ui-spin 0.6s linear infinite;
+}
+
+@keyframes ui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-button-loading::before {
+    animation-duration: 1.5s;
+  }
 }
 
 /* Sizes: website xs / default / lg / icon */
 .ui-button-sm {
   height: var(--ui-control-height-sm);
-  padding: 0 var(--ui-spacing-sm);
-  gap: var(--ui-spacing-xs);
+  padding: 0 calc(var(--ui-spacing) * 2);
+  gap: var(--ui-spacing);
   font-size: var(--ui-font-size-xs);
 }
 
 .ui-button-md {
   height: var(--ui-control-height-md);
-  padding: 0 var(--ui-spacing-md);
+  padding: 0 calc(var(--ui-spacing) * 3);
   font-size: var(--ui-font-size-xs);
 }
 
 .ui-button-lg {
   height: var(--ui-control-height-lg);
-  padding: 0 var(--ui-spacing-lg);
+  padding: 0 calc(var(--ui-spacing) * 4);
   font-size: var(--ui-font-size-sm);
 }
 
 .ui-button-icon {
-  width: calc(var(--ui-control-height-md) + var(--ui-spacing-unit));
-  height: calc(var(--ui-control-height-md) + var(--ui-spacing-unit));
+  width: calc(var(--ui-control-height-md) + var(--ui-spacing));
+  height: calc(var(--ui-control-height-md) + var(--ui-spacing));
   padding: 0;
 }
 
@@ -84,33 +111,33 @@
 
 /* Variants */
 .ui-button-primary {
-  background-color: var(--ui-color-primary);
-  color: var(--ui-color-primary-foreground);
+  background-color: var(--ui-primary);
+  color: var(--ui-primary-foreground);
 }
 
 .ui-button-primary:hover {
-  background-color: color-mix(in srgb, var(--ui-color-primary) 90%, transparent);
+  background-color: color-mix(in srgb, var(--ui-primary) 90%, transparent);
 }
 
 .ui-button-secondary {
-  background-color: var(--ui-color-subtle-surface);
-  color: var(--ui-color-text-primary);
+  background-color: var(--ui-secondary);
+  color: var(--ui-secondary-foreground);
 }
 
 .ui-button-secondary:hover {
-  background-color: color-mix(in oklch, var(--ui-color-subtle-surface), var(--ui-color-text-primary) 5%);
+  background-color: color-mix(in oklch, var(--ui-secondary), var(--ui-secondary-foreground) 5%);
 }
 
 .ui-button-outline {
-  border-color: var(--ui-color-border);
-  background-color: var(--ui-color-background);
-  color: var(--ui-color-text-primary);
+  border-color: var(--ui-border);
+  background-color: var(--ui-background);
+  color: var(--ui-foreground);
 }
 
 .ui-button-outline:hover,
 .ui-button-ghost:hover {
-  background-color: var(--ui-color-subtle-surface);
-  color: var(--ui-color-text-primary);
+  background-color: var(--ui-accent);
+  color: var(--ui-accent-foreground);
 }
 
 .ui-button-ghost {
@@ -119,23 +146,24 @@
 }
 
 .ui-button-destructive {
-  background-color: color-mix(in srgb, var(--ui-color-error) 10%, transparent);
-  color: var(--ui-color-error);
+  background-color: color-mix(in srgb, var(--ui-destructive) 10%, transparent);
+  color: var(--ui-destructive);
 }
 
 .ui-button-destructive:hover {
-  background-color: color-mix(in srgb, var(--ui-color-error) 20%, transparent);
+  background-color: color-mix(in srgb, var(--ui-destructive) 20%, transparent);
 }
 
 .ui-button-destructive:focus-visible {
-  border-color: color-mix(in srgb, var(--ui-color-error) 40%, transparent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-color-error) 20%, transparent);
+  border-color: color-mix(in srgb, var(--ui-destructive) 40%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ui-destructive) 20%, transparent);
 }
 
+/* The one theme-aware component rule: mirrors the website's dark:bg-destructive/20 */
 .dark .ui-button-destructive {
-  background-color: color-mix(in srgb, var(--ui-color-error) 20%, transparent);
+  background-color: color-mix(in srgb, var(--ui-destructive) 20%, transparent);
 }
 
 .dark .ui-button-destructive:hover {
-  background-color: color-mix(in srgb, var(--ui-color-error) 30%, transparent);
+  background-color: color-mix(in srgb, var(--ui-destructive) 30%, transparent);
 }
