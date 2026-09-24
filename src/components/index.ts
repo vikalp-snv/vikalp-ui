@@ -1,9 +1,26 @@
-export { Badge } from "./Badge";
-export { Button } from "./Button";
-export { Card } from "./Card";
-export { Input } from "./Input";
-
-export type { BadgeProps, BadgeVariant } from "./Badge";
-export type { ButtonProps, ButtonSize, ButtonVariant } from "./Button";
-export type { CardProps } from "./Card";
-export type { InputProps } from "./Input";
+// Each component's index.ts is its public surface; this barrel only collects them.
+export * from "./Alert";
+export * from "./Avatar";
+export * from "./Badge";
+export * from "./Button";
+export * from "./Card";
+export * from "./Checkbox";
+export * from "./Container";
+export * from "./Divider";
+export * from "./EmptyState";
+export * from "./Flex";
+export * from "./Grid";
+export * from "./Heading";
+export * from "./Input";
+export * from "./Link";
+export * from "./List";
+export * from "./Progress";
+export * from "./Radio";
+export * from "./Select";
+export * from "./Skeleton";
+export * from "./Spinner";
+export * from "./Stack";
+export * from "./Switch";
+export * from "./Table";
+export * from "./Text";
+export * from "./Textarea";

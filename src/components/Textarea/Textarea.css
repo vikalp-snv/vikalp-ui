@@ -1,0 +1,9 @@
+/* Layers on .ui-input (imported first), overriding only the single-line bits */
+.ui-textarea {
+  display: block;
+  height: auto;
+  min-height: var(--ui-control-height-md);
+  padding-block: calc(var(--ui-spacing) * 1.5);
+  line-height: var(--ui-line-height-normal);
+  resize: vertical;
+}

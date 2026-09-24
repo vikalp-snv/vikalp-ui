@@ -1,0 +1,18 @@
+/*
+ * Cross-component rules that are not tokens. Nothing here targets bare
+ * elements, so it never restyles the consumer's own markup.
+ */
+
+/* Component classes set `display`, which would otherwise beat the browser's
+   [hidden] rule and make <Card hidden> visible. Two attribute selectors
+   (0,2,0) outrank any single component class. */
+[class*="ui-"][hidden] {
+  display: none;
+}
+
+/* Shared by Button's loading state and Spinner */
+@keyframes ui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

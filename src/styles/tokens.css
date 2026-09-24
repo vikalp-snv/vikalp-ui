@@ -38,6 +38,13 @@
   --ui-font-size-sm: 14px;
   --ui-font-size-md: 16px;
   --ui-font-size-lg: 18px;
+  /* Heading steps: Tailwind text-xl … text-4xl, all used on the website */
+  --ui-font-size-xl: 20px;
+  --ui-font-size-2xl: 24px;
+  --ui-font-size-3xl: 30px;
+  --ui-font-size-4xl: 36px;
+  --ui-line-height-tight: 1.25; /* headings, titles */
+  --ui-line-height-normal: 1.5; /* body text */
   /* Only 400 and 700 are loaded by the website (astro.config.mjs) */
   --ui-font-weight-regular: 400;
   --ui-font-weight-bold: 700;

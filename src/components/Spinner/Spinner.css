@@ -1,0 +1,45 @@
+/* Ring in currentColor, so className="…" or a parent color can recolor it */
+.ui-spinner {
+  display: inline-block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: var(--ui-radius-full);
+  color: var(--ui-primary);
+  vertical-align: middle;
+  animation: ui-spin 0.6s linear infinite;
+}
+
+.ui-spinner-sm {
+  width: calc(var(--ui-spacing) * 2.5);
+  height: calc(var(--ui-spacing) * 2.5);
+}
+
+.ui-spinner-md {
+  width: calc(var(--ui-spacing) * 4);
+  height: calc(var(--ui-spacing) * 4);
+}
+
+.ui-spinner-lg {
+  width: calc(var(--ui-spacing) * 6);
+  height: calc(var(--ui-spacing) * 6);
+  border-width: 3px;
+}
+
+/* Visually hidden, still read by screen readers */
+.ui-spinner-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Slowed, not stopped: a frozen ring would read as "done" */
+@media (prefers-reduced-motion: reduce) {
+  .ui-spinner {
+    animation-duration: 1.5s;
+  }
+}

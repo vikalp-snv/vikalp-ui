@@ -1,0 +1,42 @@
+.ui-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--ui-spacing) * 1.5);
+  padding: calc(var(--ui-spacing) * 8) calc(var(--ui-spacing) * 4);
+  font-family: var(--ui-font-family-sans);
+  text-align: center;
+}
+
+.ui-empty-state-icon {
+  display: grid;
+  place-items: center;
+  width: calc(var(--ui-spacing) * 8);
+  height: calc(var(--ui-spacing) * 8);
+  margin-bottom: var(--ui-spacing);
+  border-radius: var(--ui-radius-full);
+  background-color: var(--ui-muted);
+  color: var(--ui-muted-foreground);
+}
+
+.ui-empty-state-icon svg {
+  width: calc(var(--ui-spacing) * 4);
+  height: calc(var(--ui-spacing) * 4);
+}
+
+.ui-empty-state-title {
+  font-size: var(--ui-font-size-md);
+  font-weight: var(--ui-font-weight-bold);
+  line-height: var(--ui-line-height-tight);
+}
+
+.ui-empty-state-description {
+  max-width: 48ch;
+  color: var(--ui-muted-foreground);
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-line-height-normal);
+}
+
+.ui-empty-state-action {
+  margin-top: var(--ui-spacing);
+}

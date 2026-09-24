@@ -1,0 +1,51 @@
+/* Status color only tints the box, border and icon. Text stays
+   card-foreground: status colors fail 4.5:1 as text (warning is 1.6:1). */
+.ui-alert {
+  --ui-alert-color: var(--ui-info); /* component-local, set per variant */
+  display: flex;
+  gap: calc(var(--ui-spacing) * 2);
+  padding: calc(var(--ui-spacing) * 2) calc(var(--ui-spacing) * 2.5);
+  border: 1px solid color-mix(in srgb, var(--ui-alert-color) 45%, var(--ui-card));
+  border-radius: var(--ui-radius-xl);
+  background-color: color-mix(in srgb, var(--ui-alert-color) 10%, var(--ui-card));
+  color: var(--ui-card-foreground);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-line-height-normal);
+}
+
+.ui-alert-success {
+  --ui-alert-color: var(--ui-success);
+}
+
+.ui-alert-warning {
+  --ui-alert-color: var(--ui-warning);
+}
+
+.ui-alert-error {
+  --ui-alert-color: var(--ui-error);
+}
+
+.ui-alert-icon {
+  display: flex;
+  flex-shrink: 0;
+  height: 1.5em; /* one line box, so the icon centers on the first line */
+  align-items: center;
+  color: var(--ui-alert-color);
+}
+
+.ui-alert-icon svg {
+  width: calc(var(--ui-spacing) * 3);
+  height: calc(var(--ui-spacing) * 3);
+}
+
+.ui-alert-content {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--ui-spacing) * 0.5);
+  min-width: 0;
+}
+
+.ui-alert-title {
+  font-weight: var(--ui-font-weight-bold);
+}

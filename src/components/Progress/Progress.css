@@ -1,0 +1,56 @@
+/* Track tinted from the foreground so it shows on both themes' surfaces
+   (dark --ui-muted is nearly the dark background). */
+.ui-progress {
+  appearance: none;
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--ui-spacing);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--ui-radius-full);
+  background-color: color-mix(in srgb, var(--ui-foreground) 12%, transparent);
+  color: var(--ui-primary);
+}
+
+.ui-progress::-webkit-progress-bar {
+  background-color: transparent;
+}
+
+.ui-progress::-webkit-progress-value {
+  border-radius: var(--ui-radius-full);
+  background-color: var(--ui-primary);
+  transition: width var(--ui-duration) ease;
+}
+
+.ui-progress::-moz-progress-bar {
+  border-radius: var(--ui-radius-full);
+  background-color: var(--ui-primary);
+}
+
+/* Indeterminate: a sliding segment painted on the element itself */
+.ui-progress:indeterminate {
+  background-image: linear-gradient(var(--ui-primary), var(--ui-primary));
+  background-size: 40% 100%;
+  background-repeat: no-repeat;
+  animation: ui-progress-slide 1.2s ease-in-out infinite;
+}
+
+.ui-progress:indeterminate::-moz-progress-bar {
+  background-color: transparent;
+}
+
+@keyframes ui-progress-slide {
+  from {
+    background-position: -100% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-progress:indeterminate {
+    animation-duration: 3s;
+  }
+}

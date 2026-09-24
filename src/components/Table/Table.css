@@ -1,0 +1,53 @@
+/* Child combinators (> * > tr) style this table only, never a nested one */
+.ui-table-wrapper {
+  overflow-x: auto;
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius-xl);
+  background-color: var(--ui-card);
+}
+
+.ui-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--ui-card-foreground);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-line-height-normal);
+}
+
+.ui-table > caption {
+  padding: calc(var(--ui-spacing) * 2) calc(var(--ui-spacing) * 3);
+  color: var(--ui-muted-foreground);
+  text-align: start;
+}
+
+.ui-table > * > tr > :is(th, td) {
+  padding: calc(var(--ui-spacing) * 2) calc(var(--ui-spacing) * 3);
+  border-bottom: 1px solid var(--ui-border);
+  text-align: start;
+  vertical-align: middle;
+}
+
+.ui-table-compact > * > tr > :is(th, td) {
+  padding: var(--ui-spacing) calc(var(--ui-spacing) * 2);
+}
+
+.ui-table > * > tr > th {
+  font-weight: var(--ui-font-weight-bold);
+}
+
+.ui-table > thead > tr > th {
+  background-color: var(--ui-muted);
+  color: var(--ui-muted-foreground);
+  font-size: var(--ui-font-size-xs);
+  white-space: nowrap;
+}
+
+.ui-table > :last-child > tr:last-child > :is(th, td) {
+  border-bottom: 0;
+}
+
+.ui-table-hoverable > tbody > tr:hover {
+  background-color: var(--ui-accent);
+  color: var(--ui-accent-foreground);
+}

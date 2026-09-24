@@ -1,0 +1,27 @@
+/* Text keeps the surrounding color; the brand shows in the underline.
+   Primary as text color is only 3.0:1 on light surfaces (AA needs 4.5:1). */
+.ui-link {
+  border-radius: var(--ui-radius-sm);
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--ui-primary);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: text-decoration-thickness var(--ui-duration-fast) ease;
+}
+
+.ui-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* A real outline, not box-shadow: it wraps multi-line links cleanly */
+.ui-link:focus-visible {
+  outline: 2px solid var(--ui-ring);
+  outline-offset: 2px;
+}
+
+.ui-link:not([href]) {
+  color: var(--ui-muted-foreground);
+  text-decoration: none;
+  cursor: default;
+}

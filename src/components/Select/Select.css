@@ -1,0 +1,31 @@
+/* Layers on .ui-input. The chevron is two gradient triangles so its color
+   comes from a token (an SVG data URI could not read CSS variables). */
+.ui-select {
+  padding-right: calc(var(--ui-spacing) * 6);
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--ui-muted-foreground) 50%),
+    linear-gradient(135deg, var(--ui-muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) 50%,
+    calc(100% - 15px) 50%;
+  background-size: 5px 5px;
+  background-repeat: no-repeat;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+/* List boxes (multiple / size > 1) grow to their rows and need no chevron */
+.ui-select[multiple],
+.ui-select[size]:not([size="1"]) {
+  height: auto;
+  padding: var(--ui-spacing);
+  background-image: none;
+}
+
+@media (forced-colors: active) {
+  .ui-select {
+    appearance: auto;
+    background-image: none;
+  }
+}

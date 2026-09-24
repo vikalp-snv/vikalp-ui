@@ -1,0 +1,17 @@
+/* Drawn with a border, not a background: forced-colors mode keeps borders */
+.ui-divider {
+  flex-shrink: 0;
+  margin: 0;
+  border: 0;
+}
+
+.ui-divider-horizontal {
+  width: 100%;
+  border-top: 1px solid var(--ui-border);
+}
+
+.ui-divider-vertical {
+  align-self: stretch;
+  min-height: 1em;
+  border-left: 1px solid var(--ui-border);
+}

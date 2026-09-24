@@ -1,0 +1,11 @@
+/* display lives in CSS, not inline, so className and [hidden] can override it */
+.ui-flex {
+  display: flex;
+}
+
+/* ul/ol rendered as layout: drop the browser's list indent */
+:is(ul, ol).ui-flex {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}

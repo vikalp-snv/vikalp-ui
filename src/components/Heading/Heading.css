@@ -1,0 +1,32 @@
+.ui-heading {
+  margin: 0;
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-family-sans);
+  font-weight: var(--ui-font-weight-bold);
+  line-height: var(--ui-line-height-tight);
+  text-wrap: balance;
+}
+
+.ui-heading-md {
+  font-size: var(--ui-font-size-md);
+}
+
+.ui-heading-lg {
+  font-size: var(--ui-font-size-lg);
+}
+
+.ui-heading-xl {
+  font-size: var(--ui-font-size-xl);
+}
+
+.ui-heading-2xl {
+  font-size: var(--ui-font-size-2xl);
+}
+
+.ui-heading-3xl {
+  font-size: var(--ui-font-size-3xl);
+}
+
+.ui-heading-4xl {
+  font-size: var(--ui-font-size-4xl);
+}

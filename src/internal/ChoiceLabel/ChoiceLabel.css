@@ -1,0 +1,63 @@
+/* Label row shared by Checkbox, Radio and Switch */
+.ui-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--ui-spacing) * 1.5);
+  color: var(--ui-foreground);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-line-height-normal);
+  cursor: pointer;
+}
+
+.ui-choice:has(:disabled) {
+  cursor: not-allowed;
+}
+
+.ui-choice:has(:disabled) > .ui-choice-label {
+  opacity: 0.5;
+}
+
+/* Base for the native inputs. appearance: none keeps the real <input>, so
+   keyboard, form submission and screen-reader state are all native. The
+   border uses muted-foreground because --ui-input (#e2e8f0) is only 1.2:1,
+   below the 3:1 WCAG minimum for a control's boundary. */
+.ui-choice-control {
+  appearance: none;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  margin: 0;
+  border: 1px solid var(--ui-muted-foreground);
+  background-color: var(--ui-background);
+  color-scheme: var(--ui-color-scheme);
+  cursor: pointer;
+  transition:
+    background-color var(--ui-duration-fast) ease,
+    border-color var(--ui-duration-fast) ease,
+    box-shadow var(--ui-duration-fast) ease;
+}
+
+.ui-choice-control:focus-visible {
+  outline: 2px solid transparent; /* visible in forced-colors mode */
+  box-shadow: var(--ui-focus-ring);
+}
+
+.ui-choice-control:checked {
+  border-color: var(--ui-primary);
+}
+
+.ui-choice-control[aria-invalid="true"] {
+  border-color: var(--ui-error);
+}
+
+.ui-choice-control:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* High-contrast mode discards custom backgrounds; hand back the native control */
+@media (forced-colors: active) {
+  .ui-choice-control {
+    appearance: auto;
+  }
+}

@@ -1,0 +1,40 @@
+/* Fallback uses secondary / secondary-foreground: muted-foreground on
+   muted is 4.25:1, short of AA for the small initials. */
+.ui-avatar {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  overflow: hidden;
+  border-radius: var(--ui-radius-full);
+  background-color: var(--ui-secondary);
+  color: var(--ui-secondary-foreground);
+  font-family: var(--ui-font-family-sans);
+  font-weight: var(--ui-font-weight-bold);
+  line-height: 1;
+  vertical-align: middle;
+  user-select: none;
+}
+
+.ui-avatar > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ui-avatar-sm {
+  width: calc(var(--ui-spacing) * 4);
+  height: calc(var(--ui-spacing) * 4);
+  font-size: var(--ui-font-size-xs);
+}
+
+.ui-avatar-md {
+  width: calc(var(--ui-spacing) * 6);
+  height: calc(var(--ui-spacing) * 6);
+  font-size: var(--ui-font-size-sm);
+}
+
+.ui-avatar-lg {
+  width: calc(var(--ui-spacing) * 8);
+  height: calc(var(--ui-spacing) * 8);
+  font-size: var(--ui-font-size-md);
+}

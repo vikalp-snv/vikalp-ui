@@ -1,0 +1,33 @@
+/* Child combinators keep nested, unrelated lists untouched */
+.ui-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-spacing);
+  margin: 0;
+  padding-inline-start: calc(var(--ui-spacing) * 4);
+  font-family: var(--ui-font-family-sans);
+  line-height: var(--ui-line-height-normal);
+}
+
+.ui-list-default > li::marker {
+  color: var(--ui-muted-foreground);
+}
+
+.ui-list-plain,
+.ui-list-divided {
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+.ui-list-divided {
+  gap: 0;
+}
+
+.ui-list-divided > li {
+  padding-block: calc(var(--ui-spacing) * 2);
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.ui-list-divided > li:last-child {
+  border-bottom: 0;
+}

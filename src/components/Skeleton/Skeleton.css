@@ -1,0 +1,29 @@
+.ui-skeleton {
+  display: block;
+  height: 1em;
+  background-color: color-mix(in srgb, var(--ui-foreground) 10%, transparent);
+  animation: ui-skeleton-pulse 1.5s ease-in-out infinite;
+}
+
+.ui-skeleton-rect {
+  border-radius: var(--ui-radius-md);
+}
+
+.ui-skeleton-circle {
+  width: calc(var(--ui-spacing) * 6);
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: var(--ui-radius-full);
+}
+
+@keyframes ui-skeleton-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-skeleton {
+    animation: none;
+  }
+}

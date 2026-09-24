@@ -1,0 +1,67 @@
+.ui-text {
+  margin: 0;
+  font-family: var(--ui-font-family-sans);
+}
+
+.ui-text-mono {
+  font-family: var(--ui-font-family-mono);
+}
+
+.ui-text-xs {
+  font-size: var(--ui-font-size-xs);
+  line-height: var(--ui-line-height-normal);
+}
+
+.ui-text-sm {
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-line-height-normal);
+}
+
+.ui-text-md {
+  font-size: var(--ui-font-size-md);
+  line-height: var(--ui-line-height-normal);
+}
+
+.ui-text-lg {
+  font-size: var(--ui-font-size-lg);
+  line-height: var(--ui-line-height-normal);
+}
+
+.ui-text-regular {
+  font-weight: var(--ui-font-weight-regular);
+}
+
+.ui-text-bold {
+  font-weight: var(--ui-font-weight-bold);
+}
+
+.ui-text-default {
+  color: var(--ui-foreground);
+}
+
+.ui-text-muted {
+  color: var(--ui-muted-foreground);
+}
+
+.ui-text-error {
+  color: var(--ui-error);
+}
+
+.ui-text-start {
+  text-align: start;
+}
+
+.ui-text-center {
+  text-align: center;
+}
+
+.ui-text-end {
+  text-align: end;
+}
+
+.ui-text-truncate {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

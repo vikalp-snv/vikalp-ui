@@ -1,0 +1,30 @@
+/* Centered content column with side gutters that grow from 640px.
+   Widths are the website's max-w-3xl / 5xl / 7xl (7xl is its page width). */
+.ui-container {
+  box-sizing: border-box;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: calc(var(--ui-spacing) * 3);
+}
+
+@media (min-width: 640px) {
+  .ui-container {
+    padding-inline: calc(var(--ui-spacing) * 5);
+  }
+}
+
+.ui-container-sm {
+  max-width: 768px;
+}
+
+.ui-container-md {
+  max-width: 1024px;
+}
+
+.ui-container-lg {
+  max-width: 1280px;
+}
+
+.ui-container-full {
+  max-width: none;
+}

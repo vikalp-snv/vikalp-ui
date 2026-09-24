@@ -1,0 +1,21 @@
+.ui-radio {
+  display: inline-grid;
+  place-content: center;
+  width: calc(var(--ui-spacing) * 3);
+  height: calc(var(--ui-spacing) * 3);
+  border-radius: var(--ui-radius-full);
+}
+
+.ui-radio::before {
+  content: "";
+  width: calc(var(--ui-spacing) * 1.5);
+  height: calc(var(--ui-spacing) * 1.5);
+  border-radius: var(--ui-radius-full);
+  background-color: var(--ui-primary);
+  transform: scale(0);
+  transition: transform var(--ui-duration-fast) ease;
+}
+
+.ui-radio:checked::before {
+  transform: scale(1);
+}
