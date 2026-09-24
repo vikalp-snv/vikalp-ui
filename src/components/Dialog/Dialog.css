@@ -1,0 +1,62 @@
+/* The UA stylesheet already centers a modal <dialog> (position: fixed, inset: 0, margin: auto) */
+.ui-dialog {
+  box-sizing: border-box;
+  width: calc(100% - var(--ui-spacing) * 4);
+  max-height: calc(100% - var(--ui-spacing) * 4);
+  overflow: auto;
+  padding: calc(var(--ui-spacing) * 4);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius-2xl);
+  background-color: var(--ui-popover);
+  box-shadow: var(--ui-shadow-lg);
+  color: var(--ui-popover-foreground);
+  color-scheme: var(--ui-color-scheme);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-sm);
+  line-height: var(--ui-line-height-normal);
+}
+
+/* Literal black: ::backdrop does not inherit custom properties in every
+   supported browser, and a dimming scrim is black in both themes anyway. */
+.ui-dialog::backdrop {
+  background-color: rgb(0 0 0 / 50%);
+}
+
+/* Freeze page scroll only while a library dialog is open as a modal */
+:root:has(.ui-dialog:modal) {
+  overflow: hidden;
+}
+
+.ui-dialog-sm {
+  max-width: 384px;
+}
+
+.ui-dialog-md {
+  max-width: 512px;
+}
+
+.ui-dialog-lg {
+  max-width: 672px;
+}
+
+.ui-dialog-close {
+  position: absolute;
+  top: calc(var(--ui-spacing) * 2);
+  right: calc(var(--ui-spacing) * 2);
+}
+
+.ui-dialog-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ui-spacing);
+  margin-bottom: calc(var(--ui-spacing) * 3);
+  padding-right: calc(var(--ui-spacing) * 4); /* clear the × button */
+}
+
+.ui-dialog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: calc(var(--ui-spacing) * 2);
+  margin-top: calc(var(--ui-spacing) * 4);
+}

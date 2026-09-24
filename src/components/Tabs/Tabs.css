@@ -1,0 +1,60 @@
+.ui-tabs {
+  font-family: var(--ui-font-family-sans);
+}
+
+/* Scrolls sideways on narrow screens instead of wrapping tabs */
+.ui-tabs-list {
+  display: flex;
+  gap: var(--ui-spacing);
+  overflow-x: auto;
+  border-bottom: 1px solid var(--ui-border);
+}
+
+.ui-tabs-trigger {
+  flex-shrink: 0;
+  margin-bottom: -1px; /* sit the active underline on the list border */
+  padding: calc(var(--ui-spacing) * 1.5) calc(var(--ui-spacing) * 2);
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: var(--ui-radius-sm) var(--ui-radius-sm) 0 0;
+  background-color: transparent;
+  color: var(--ui-muted-foreground);
+  font-family: inherit;
+  font-size: var(--ui-font-size-sm);
+  font-weight: var(--ui-font-weight-bold);
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color var(--ui-duration-fast) ease,
+    border-color var(--ui-duration-fast) ease;
+}
+
+.ui-tabs-trigger:hover {
+  color: var(--ui-foreground);
+}
+
+.ui-tabs-trigger[aria-selected="true"] {
+  border-bottom-color: var(--ui-primary);
+  color: var(--ui-foreground);
+}
+
+/* Inset ring: the list's overflow would clip an outer one */
+.ui-tabs-trigger:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow: inset 0 0 0 2px var(--ui-ring);
+}
+
+.ui-tabs-trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ui-tabs-content {
+  padding-top: calc(var(--ui-spacing) * 3);
+  border-radius: var(--ui-radius-sm);
+}
+
+.ui-tabs-content:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow: var(--ui-focus-ring);
+}

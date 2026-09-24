@@ -53,6 +53,11 @@
   --ui-duration-fast: 150ms;
   --ui-duration: 300ms;
 
+  /* Stacking order for floating UI. Dialog needs none: it opens in the
+     browser's top layer, above everything. */
+  --ui-z-overlay: 50; /* Dropdown menu, Tooltip */
+  --ui-z-toast: 100; /* Toasts stay above overlays */
+
   /* Elevation (Tailwind shadow-xs / shadow-lg as used by the website cards) */
   --ui-shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 5%);
   --ui-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -4px rgb(0 0 0 / 10%);

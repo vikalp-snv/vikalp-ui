@@ -1,0 +1,55 @@
+.ui-tooltip-anchor {
+  position: relative;
+  display: inline-flex;
+}
+
+/* Inverted colors (foreground on background) stay high-contrast in both themes */
+.ui-tooltip {
+  position: absolute;
+  z-index: var(--ui-z-overlay);
+  box-sizing: border-box;
+  width: max-content;
+  max-width: calc(var(--ui-spacing) * 40);
+  padding: var(--ui-spacing) calc(var(--ui-spacing) * 1.5);
+  border-radius: var(--ui-radius-md);
+  background-color: var(--ui-foreground);
+  box-shadow: var(--ui-shadow-lg);
+  color: var(--ui-background);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-xs);
+  font-weight: var(--ui-font-weight-regular);
+  line-height: var(--ui-line-height-normal);
+  text-align: center;
+  white-space: normal;
+}
+
+.ui-tooltip-top {
+  bottom: calc(100% + var(--ui-spacing));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ui-tooltip-bottom {
+  top: calc(100% + var(--ui-spacing));
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.ui-tooltip-left {
+  top: 50%;
+  right: calc(100% + var(--ui-spacing));
+  transform: translateY(-50%);
+}
+
+.ui-tooltip-right {
+  top: 50%;
+  left: calc(100% + var(--ui-spacing));
+  transform: translateY(-50%);
+}
+
+/* Forced-colors mode drops the background; a border keeps the box visible */
+@media (forced-colors: active) {
+  .ui-tooltip {
+    border: 1px solid CanvasText;
+  }
+}

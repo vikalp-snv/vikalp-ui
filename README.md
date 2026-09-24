@@ -61,7 +61,64 @@ forwards `ref` to that element. Exceptions are noted in the last column.
 | | `List` | `ordered`; `variant` default · plain · divided; children are `<li>` | `<ul>` / `<ol>` |
 | | `Table` | `density` default · compact; `hoverable`; children are native table markup | `<table>` in a horizontally scrolling `<div>` |
 
-The props' unions are exported as types, named `<Component><Prop>`:
+### Interactive components
+
+```tsx
+// Dialog: controlled, built on the native <dialog> + showModal()
+<Dialog open={open} onOpenChange={setOpen} size="sm">
+  <DialogHeader>
+    <DialogTitle>Delete test run?</DialogTitle>
+    <DialogDescription>This can't be undone.</DialogDescription>
+  </DialogHeader>
+  <DialogFooter>
+    <DialogClose>Cancel</DialogClose>
+    <DialogClose variant="destructive" onClick={remove}>Delete</DialogClose>
+  </DialogFooter>
+</Dialog>
+
+// Dropdown: menu button; items close the menu unless onClick calls preventDefault()
+<Dropdown>
+  <DropdownTrigger>Options</DropdownTrigger>
+  <DropdownMenu align="start">
+    <DropdownItem onClick={openProfile}>Profile</DropdownItem>
+    <DropdownItem checked={auto} onClick={toggleAuto}>Auto-refresh</DropdownItem>
+    <DropdownItem disabled>Disabled</DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+
+// Tabs: `value` + `onValueChange` (controlled) or `defaultValue`
+<Tabs defaultValue="overview">
+  <TabsList aria-label="Test run">
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="logs" disabled>Logs</TabsTrigger>
+  </TabsList>
+  <TabsContent value="overview">…</TabsContent>
+  <TabsContent value="logs">…</TabsContent>
+</Tabs>
+
+// Tooltip: wraps one focusable element; placement top · bottom · left · right
+<Tooltip content="Run the test" placement="top">
+  <Button>Run</Button>
+</Tooltip>
+
+// Toast: wrap the app once, then call toast() anywhere below it
+<ToastProvider duration={5000}>
+  <App />
+</ToastProvider>
+
+const { toast, dismiss } = useToast();
+const id = toast({ title: "Test completed", description: "…", variant: "success" });
+```
+
+| Component | Behaviour |
+|---|---|
+| `Dialog` | The browser supplies the backdrop, stacking above everything, the focus trap and focus return. Escape, a backdrop click, × or `DialogClose` call `onOpenChange(false)`. Page scroll is locked while it's open. `size` sm · md · lg. |
+| `Dropdown` | Follows the WAI-ARIA menu-button pattern. Enter, Space and ↓ open the menu on the first item; ↑ opens it on the last. ↑/↓ wrap, Home/End jump, and Escape closes and returns focus to the trigger. Tab, a click outside, or moving focus away closes it. Disabled items stay focusable but do nothing. `checked` turns an item into a `menuitemcheckbox`. |
+| `Tabs` | The standard tabs pattern: only the active tab is in the Tab order. ←/→ wrap and Home/End jump, skipping disabled tabs, and move the selection with them. Inactive panels stay mounted but hidden. |
+| `Tooltip` | Shows on hover after 300ms and immediately on keyboard focus. Hides on leave, blur or Escape. The pointer can move onto the tooltip without it closing. It is linked with `aria-describedby`. `disabled` renders just the child. |
+| `Toast` | Toasts stack bottom-right, or full width on phones. They dismiss themselves after `duration` (`Infinity` keeps a toast until closed) and pause while hovered or focused. Each has a × button. The list is a polite live region, and error toasts use `role="alert"`. Variants: success · info · warning · error. |
+
+, named `<Component><Prop>`:
 `ButtonVariant`, `TextTone`, `HeadingLevel`, `AlertVariant` and so on.
 `Space` is the type of every `gap` prop: a multiple of the 6px unit
 (`gap={2}` is 12px).
@@ -147,6 +204,9 @@ src/components/Name/
   Add ARIA only where HTML has no equivalent.
 - Size things with `calc(var(--ui-spacing) * N)`. `gap` props take the `Space` type.
 - Code shared by several components that isn't public goes in `src/internal/`.
+- For interactive components, build on native behaviour first (`<dialog>`,
+  real buttons), then add the WAI-ARIA pattern's keyboard handling. Floating
+  UI stacks with `--ui-z-overlay` and `--ui-z-toast`.
 - Use finite unions for `variant` and `size`, and add them only where the
   component actually has variants.
 - Use `cx()` from `src/utils/cx.ts` to compose class names.

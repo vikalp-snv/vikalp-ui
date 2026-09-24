@@ -1,0 +1,49 @@
+/* The viewport ignores the pointer so the page beneath stays clickable;
+   only the toasts themselves catch it */
+.ui-toast-viewport {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  z-index: var(--ui-z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--ui-spacing) * 1.5);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: calc(var(--ui-spacing) * 64);
+  margin: 0;
+  padding: calc(var(--ui-spacing) * 3);
+  list-style: none;
+  pointer-events: none;
+}
+
+.ui-toast {
+  position: relative;
+  pointer-events: auto;
+  animation: ui-toast-in var(--ui-duration) ease;
+}
+
+/* The body is an Alert; make room for × and lift it off the page */
+.ui-toast > .ui-alert {
+  padding-right: calc(var(--ui-spacing) * 7);
+  box-shadow: var(--ui-shadow-lg);
+}
+
+.ui-toast-close {
+  position: absolute;
+  top: calc(var(--ui-spacing) * 1.5);
+  right: calc(var(--ui-spacing) * 1.5);
+}
+
+@keyframes ui-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--ui-spacing) * 2));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-toast {
+    animation: none;
+  }
+}

@@ -1,0 +1,85 @@
+.ui-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Simple placement: below the trigger, no flipping near the viewport edge */
+.ui-dropdown-menu {
+  position: absolute;
+  top: calc(100% + var(--ui-spacing));
+  z-index: var(--ui-z-overlay);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  min-width: max(100%, calc(var(--ui-spacing) * 30));
+  padding: var(--ui-spacing);
+  border: 1px solid var(--ui-border);
+  border-radius: var(--ui-radius-lg);
+  background-color: var(--ui-popover);
+  box-shadow: var(--ui-shadow-lg);
+  color: var(--ui-popover-foreground);
+  font-family: var(--ui-font-family-sans);
+  font-size: var(--ui-font-size-sm);
+}
+
+.ui-dropdown-menu-start {
+  left: 0;
+}
+
+.ui-dropdown-menu-end {
+  right: 0;
+}
+
+.ui-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--ui-spacing) * 1.5);
+  width: 100%;
+  padding: calc(var(--ui-spacing) * 1.5) calc(var(--ui-spacing) * 2);
+  border: 0;
+  border-radius: var(--ui-radius-md);
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: var(--ui-line-height-tight);
+  text-align: start;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+/* :focus, not :focus-visible: the focused item is the menu's current item,
+   whether it got there by keyboard or by the menu opening */
+.ui-dropdown-item:hover,
+.ui-dropdown-item:focus {
+  outline: 2px solid transparent; /* shows in forced-colors mode */
+  background-color: var(--ui-accent);
+  color: var(--ui-accent-foreground);
+}
+
+.ui-dropdown-item[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ui-dropdown-item[aria-disabled="true"]:hover {
+  background-color: transparent;
+}
+
+/* When any item is checkable, every item gets the same left gutter and the
+   check mark sits in it, so labels line up whether checked or not */
+.ui-dropdown-menu:has(.ui-dropdown-check) > .ui-dropdown-item {
+  position: relative;
+  padding-left: calc(var(--ui-spacing) * 5.5);
+}
+
+.ui-dropdown-check {
+  position: absolute;
+  left: calc(var(--ui-spacing) * 2);
+  width: calc(var(--ui-spacing) * 2.5);
+  height: calc(var(--ui-spacing) * 2.5);
+  color: var(--ui-primary);
+}
+
+.ui-dropdown-item[aria-checked="false"] > .ui-dropdown-check {
+  visibility: hidden;
+}

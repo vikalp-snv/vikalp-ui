@@ -1,0 +1,31 @@
+.ui-close-button {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: calc(var(--ui-spacing) * 4);
+  height: calc(var(--ui-spacing) * 4);
+  padding: 0;
+  border: 0;
+  border-radius: var(--ui-radius-md);
+  background-color: transparent;
+  color: var(--ui-muted-foreground);
+  cursor: pointer;
+  transition:
+    background-color var(--ui-duration-fast) ease,
+    color var(--ui-duration-fast) ease;
+}
+
+.ui-close-button:hover {
+  background-color: var(--ui-accent);
+  color: var(--ui-accent-foreground);
+}
+
+.ui-close-button:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow: var(--ui-focus-ring);
+}
+
+.ui-close-button svg {
+  width: calc(var(--ui-spacing) * 2.5);
+  height: calc(var(--ui-spacing) * 2.5);
+}
